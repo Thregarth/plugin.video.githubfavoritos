@@ -1,6 +1,0 @@
-<settings>
-    <category label="Configuración de GitHub">
-        <setting id="github_token" type="text" label="Token de GitHub" default=""/>
-        <setting id="github_repo" type="text" label="Repositorio (usuario/repo)" default=""/>
-    </category>
-</settings>
