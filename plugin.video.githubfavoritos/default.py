@@ -28,8 +28,26 @@ if not xbmcvfs.exists(addon_profile):
 
 # Función para guardar el elemento seleccionado en favoritos.json
 def guardar_favorito():
+    xbmc.executebuiltin("ActivateWindow(busydialog)")
+    # Lista de etiquetas para obtener información completa del elemento seleccionado
+    labels = [
+        'ListItem.Label', 'ListItem.Label2', 'ListItem.ThumbnailImage', 'ListItem.Icon',
+        'ListItem.Art(season.poster)', 'ListItem.Art(tvshow.poster)', 'ListItem.Art(clearart)',
+        'ListItem.Art(fanart)', 'ListItem.Art(banner)', 'ListItem.FilenameAndPath', 'ListItem.Path',
+        'ListItem.Title', 'ListItem.OriginalTitle', 'ListItem.TVShowTitle', 'ListItem.Season',
+        'ListItem.Episode', 'ListItem.Genre', 'ListItem.Year', 'ListItem.Director', 'ListItem.Mpaa',
+        'ListItem.Plot', 'ListItem.PlotOutline', 'ListItem.Rating', 'ListItem.UserRating', 'ListItem.Votes',
+        'ListItem.Cast', 'ListItem.CastAndRole', 'ListItem.Writer', 'ListItem.Tagline', 'ListItem.Studio'
+    ]
+    # Registrar cada etiqueta en el log de Kodi
+    xbmc.log("Información del elemento seleccionado para guardar en favoritos:", level=xbmc.LOGINFO)
+    item_info = {}
+    for label in labels:
+        item_info[label] = xbmc.getInfoLabel(label)
+        xbmc.log(f"{label}: {item_info[label]}", level=xbmc.LOGINFO)
+
     # Obtener información del elemento seleccionado
-    item = xbmc.getInfoLabel('ListItem.Label')
+    item = xbmc.getInfoLabel('ListItem.OriginalTitle')
     path = xbmc.getInfoLabel('ListItem.FileNameAndPath')
 
     if not item or not path:
@@ -37,10 +55,7 @@ def guardar_favorito():
         return
 
     # Crear un diccionario con la información
-    favorito = {
-        'title': item,
-        'path': path
-    }
+    favorito = item_info
 
     # Leer el archivo favoritos.json si existe
     if xbmcvfs.exists(favoritos_path):
@@ -63,6 +78,7 @@ def guardar_favorito():
 
     # Subir el archivo a GitHub
     subir_a_github(favoritos_path, "favoritos")
+    xbmc.executebuiltin("Dialog.Close(busydialog)")
 
 def subir_a_github(file_path, title):
     # Leer el archivo y codificar su contenido en base64

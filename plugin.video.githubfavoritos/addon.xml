@@ -11,6 +11,9 @@
 			</item>
 		</menu>
 	</extension>
+    <extension point="xbmc.python.pluginsource" library="listado.py">
+        <provides>video</provides>
+    </extension>
     <extension point="xbmc.addon.metadata">
         <summary>Guardar un acceso directo del contenido seleccionado en GitHub</summary>
         <description>Este addon añade una opción en el menú contextual para guardar un acceso directo del contenido seleccionado en un repositorio de GitHub.</description>
